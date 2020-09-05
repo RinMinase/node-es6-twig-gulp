@@ -11,7 +11,7 @@
     "url": "git+https://github.com/RinMinase/nodejs-es6-twig-gulp.git"
   },
   "scripts": {
-    "build": "echo \"Start Script\" && exit 1",
+    "build": "echo \"Build Script\" && exit 1",
     "start": "echo \"Start Script\" && exit 1"
   },
   "dependencies": {
