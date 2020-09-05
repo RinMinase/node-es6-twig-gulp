@@ -11,8 +11,10 @@
     "url": "git+https://github.com/RinMinase/nodejs-es6-twig-gulp.git"
   },
   "scripts": {
-    "start": "nodemon ./src/index.js",
-    "build": "echo \"Build Script\" && exit 1"
+    "start": "webpack-dev-server",
+    "start_old": "nodemon ./src/index.js",
+    "build": "webpack --mode production --progress true",
+    "build_old": "babel index.js --out-dir dist"
   },
   "dependencies": {
     "dotenv": "^8.2.0",
@@ -20,9 +22,25 @@
     "twig": "^1.15.2"
   },
   "devDependencies": {
+    "@babel/cli": "^7.11.6",
+    "@babel/core": "^7.11.6",
+    "@babel/preset-env": "^7.11.5",
+    "babel-loader": "^8.1.0",
+    "css-loader": "^4.2.2",
     "gulp": "^4.0.2",
+    "mini-css-extract-plugin": "^0.11.0",
     "nodemon": "^2.0.4",
-    "webpack": "^4.44.1"
+    "request": "^2.88.2",
+    "sass-loader": "^10.0.2",
+    "webpack": "^4.44.1",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.0",
+    "webpack-node-externals": "^2.5.2"
+  },
+  "babel": {
+    "presets": [
+      "@babel/preset-env"
+    ]
   },
   "nodemonConfig": {
     "ignore": [],
