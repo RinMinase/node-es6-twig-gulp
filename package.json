@@ -11,10 +11,15 @@
     "url": "git+https://github.com/RinMinase/nodejs-es6-twig-gulp.git"
   },
   "scripts": {
-    "build": "echo \"Build Script\" && exit 1",
-    "start": "echo \"Start Script\" && exit 1"
+    "pm2": "pm2",
+    "start": "pm2 start index.js --watch",
+    "stop": "pm2 stop all && pm2 delete all",
+    "build": "echo \"Build Script\" && exit 1"
   },
   "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "pm2": "^4.4.1",
     "twig": "^1.15.2"
   },
   "devDependencies": {
