@@ -22,12 +22,14 @@
   "devDependencies": {
     "gulp": "^4.0.2",
     "nodemon": "^2.0.4",
-    "pm2": "^4.4.1",
     "webpack": "^4.44.1"
   },
   "nodemonConfig": {
     "ignore": [],
-    "watch": [ "src", "index.js" ],
+    "watch": [
+      "src",
+      "index.js"
+    ],
     "ext": "js,json"
   }
 }
