@@ -11,9 +11,7 @@
     "url": "git+https://github.com/RinMinase/nodejs-es6-twig-gulp.git"
   },
   "scripts": {
-    "pm2": "pm2",
-    "start": "pm2 start index.js --watch",
-    "stop": "pm2 stop all && pm2 delete all",
+    "start": "nodemon ./src/index.js",
     "build": "echo \"Build Script\" && exit 1"
   },
   "dependencies": {
@@ -23,7 +21,13 @@
   },
   "devDependencies": {
     "gulp": "^4.0.2",
+    "nodemon": "^2.0.4",
     "pm2": "^4.4.1",
     "webpack": "^4.44.1"
+  },
+  "nodemonConfig": {
+    "ignore": [],
+    "watch": [ "src", "index.js" ],
+    "ext": "js,json"
   }
 }
