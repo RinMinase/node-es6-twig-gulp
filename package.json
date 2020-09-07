@@ -53,8 +53,7 @@
     ],
     "ext": "js,json,css,html,twig",
     "events": {
-      "start": "node-sass --output-style compressed public/scss/index.scss dist/public/css/index.css",
-      "restart": "node-sass --output-style compressed public/scss/index.scss dist/public/css/index.css"
+      "start": "node-sass --output-style compressed public/scss/index.scss dist/public/css/index.css"
     }
   }
 }
