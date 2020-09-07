@@ -2,8 +2,8 @@ import path from 'path';
 import express from 'express';
 import createError from 'http-errors';
 
-import home from './routes/home';
-import users from './routes/users';
+import home from './components/home';
+import users from './components/users';
 
 const app = express();
 
