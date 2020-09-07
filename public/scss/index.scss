@@ -1,6 +1,17 @@
+/**
+ * General imports
+ */
+@import "../../node_modules/tailwindcss/dist/base.min";
+@import "../../node_modules/tailwindcss/dist/components.min";
+@import "tailwind.scss";
+
+/**
+ * Styles
+ */
+
 body {
     padding: 50px;
-    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    font-family: Helvetica, Arial, sans-serif;
 }
 
 a {
@@ -9,6 +20,6 @@ a {
 
 body {
     .red {
-        color: blue;
+        color: red;
     }
 }

@@ -75,10 +75,6 @@ module.exports = (env, arg) => {
                     test: /\.twig$/,
                     use: { loader: 'twig-loader' }
                 },
-                {
-                    test: /\.html$/,
-                    use: [{loader: "html-loader"}]
-                },
                 configureScripts(),
             ]
         },
@@ -109,7 +105,13 @@ module.exports = (env, arg) => {
      */
     if (!isProduction) {
         config.devtool = 'source-map';
-        config.plugins.push(new NodemonPlugin())
+        config.plugins.push(new NodemonPlugin({
+            watch: [ "src/", "public/scss/", "index.js" ],
+            ext: "js,scss,twig",
+            events: {
+              start: "node-sass --output-style compressed public/scss/index.scss dist/public/css/index.css"
+            }
+        }));
     }
 
     /**
