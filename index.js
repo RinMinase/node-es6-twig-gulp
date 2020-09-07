@@ -1,15 +1,34 @@
-require('dotenv').config();
+import app from './src/app'
+import debugLibrary from 'debug';
+import http from 'http';
 
-const app = require('express')();
-const port = 3000;
+const debug = debugLibrary('nodejs-es6-twig-gulp:server');
+const port = parseInt(process.env.PORT) || '3000';
 
-app.get('/', (_request, response) => {
-	response.end('Express App');
-});
+app.set('port', port);
 
-app.get('/home', (_request, response) => {
-	response.end('Test Home Page, ENV = ' + process.env.TEST);
-});
+const server = http.createServer(app);
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);
 
-console.log('Application ready on http://localhost:' + port);
-app.listen(port);
+function onError(error) {
+  if (error.syscall !== 'listen') throw error;
+
+  switch (error.code) {
+    case 'EACCES':
+      console.error(`Port ${port} requires elevated privileges`);
+      process.exit(1);
+    case 'EADDRINUSE':
+      console.error(`Port ${port} is already in use`);
+      process.exit(1);
+    default:
+      throw error;
+  }
+}
+
+function onListening() {
+  const addr = server.address();
+  const bind = typeof addr === 'string' ? `pipe ${addr}` : `port ${addr.port}`;
+  debug('Listening on ' + bind);
+}

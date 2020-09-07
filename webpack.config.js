@@ -1,6 +1,23 @@
 const path = require('path');
 const externals = require('webpack-node-externals');
+const NodemonPlugin = require('nodemon-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
+const HtmlWebPackPlugin = require("html-webpack-plugin")
+
+/**
+ * Scripts configuration
+ */
+function configureScripts() {
+    return {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: {
+            loader: 'babel-loader',
+        }
+    }
+}
 
 /**
  * Stylesheept configuration
@@ -21,22 +38,6 @@ function configureStyles(isProduction) {
 }
 
 /**
- * Scripts configuration
- */
-function configureScripts() {
-    return {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        use: {
-            loader: 'babel-loader',
-            options: {
-                presets: ['@babel/preset-env']
-            }
-        }
-    }
-}
-
-/**
  * Bundle configuration for sizes and optimizations
  *
  * @param {boolean} isProduction removes checking of vendors size when not on production
@@ -44,8 +45,8 @@ function configureScripts() {
 function configureBundle(isProduction) {
     const KB = 1024;
     const bundleConfig = {
-        resolve: { extensions: [".js"] },
-        optimization: { splitChunks: { chunks: "all" } },
+        // resolve: { extensions: [".js"] },
+        // optimization: { splitChunks: { chunks: "all" } },
         performance: {
             hints: (isProduction) ? "warning" : false,
             maxEntrypointSize: 320 * KB,
@@ -82,25 +83,52 @@ module.exports = (env, arg) => {
         entry: './index.js',
         output: {
             path: path.resolve(__dirname, "dist"),
-            filename: "[name].bundle.[contenthash:5].js"
+            publicPath: '/',
+            filename: '[name].js'
+            // filename: 'index.js'
+            // filename: "[name].bundle.[contenthash:5].js"
         },
         module: {
             rules: [
-                configureStyles(isProduction),
+                {
+                    test: /\.twig$/,
+                    use: { loader: 'twig-loader' }
+                },
+                {
+                    test: /\.html$/,
+                    use: [{loader: "html-loader"}]
+                },
                 configureScripts(),
+                // configureStyles(isProduction),
             ]
         },
         node: {
             fs: 'empty',
-            net: 'empty'
+            net: 'empty',
+            __dirname: false,
+            __filename: false,
         },
-        devServer: {
-            port: 3000,
-            historyApiFallback: true
-        },
+        // devServer: {
+        //     port: 3000,
+        //     historyApiFallback: true
+        // },
         ...configureBundle(isProduction),
         plugins: [
-            new MiniCssExtractPlugin({ filename: "[name].bundle.[contenthash:5].css" })
+            // new HtmlWebPackPlugin({
+            //     template: "./src/index.html",
+            //     filename: "./src/index.html",
+            //     // excludeChunks: [ 'server' ]
+            // }),
+            new CleanWebpackPlugin(),
+            // new MiniCssExtractPlugin({
+            //     filename: "[name].bundle.[contenthash:5].css"
+            // }),
+            new CopyPlugin({
+                patterns: [
+                    { from: "src/views", to: "views" },
+                    { from: "public", to: "public" },
+                ]
+            })
         ]
     };
 
@@ -109,6 +137,7 @@ module.exports = (env, arg) => {
      */
     if (!isProduction) {
         config.devtool = 'source-map';
+        config.plugins.push(new NodemonPlugin())
     }
 
     /**
