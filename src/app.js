@@ -11,8 +11,8 @@ const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.engine('html', require('ejs').renderFile)
-// app.engine('html', require('twig').renderFile)
+// app.engine('html', require('ejs').renderFile)
+app.engine('html', require('twig').renderFile)
 app.set('view engine', 'html');
 
 app.use(express.json());
@@ -33,9 +33,11 @@ app.use(function(err, req, res, next) {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
+    console.error('this is error: ', err)
+
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.render('error.twig');
 });
 
 export default app;

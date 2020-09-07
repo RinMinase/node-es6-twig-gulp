@@ -5,7 +5,7 @@ const router = express.Router();
 // const page = require('../views/layout.twig');
 
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  res.render('index.twig', { title: 'Express' });
 });
 
 // router.get('/', (_request, response) => {
