@@ -11,7 +11,9 @@
     "url": "git+https://github.com/RinMinase/nodejs-es6-twig-gulp.git"
   },
   "scripts": {
-    "start": "webpack --mode development --progress true --watch",
+    "start": "nodemon --exec run-s start:**",
+    "start:script": "webpack --mode development --progress true --watch",
+    "start:style": "node-sass --output-style compressed public/scss/index.scss dist/public/css/index.css",
     "start_old": "webpack-dev-server",
     "build": "webpack --mode production --progress true",
     "build_old": "babel index.js --out-dir dist"
@@ -27,19 +29,26 @@
     "@babel/core": "^7.11.6",
     "@babel/preset-env": "^7.11.5",
     "babel-loader": "^8.1.0",
+    "babel-plugin-css-modules-transform": "^1.6.2",
     "clean-webpack-plugin": "^3.0.0",
     "copy-webpack-plugin": "^6.1.0",
     "css-loader": "^4.2.2",
     "debug": "~2.6.9",
     "ejs": "^3.1.5",
+    "fast-sass-loader": "^1.5.0",
+    "file-loader": "^6.1.0",
     "gulp": "^4.0.2",
     "html-loader": "^1.3.0",
     "html-webpack-plugin": "^4.4.1",
     "mini-css-extract-plugin": "^0.11.0",
+    "node-sass": "^4.14.1",
+    "node-sass-middleware": "^0.11.0",
     "nodemon": "^2.0.4",
     "nodemon-webpack-plugin": "^4.3.2",
+    "npm-run-all": "^4.1.5",
     "request": "^2.88.2",
     "sass-loader": "^10.0.2",
+    "style-loader": "^1.2.1",
     "twig-html-loader": "^0.1.8",
     "twig-loader": "^0.5.5",
     "webpack": "^4.44.1",
@@ -58,6 +67,10 @@
       "src",
       "index.js"
     ],
-    "ext": "js,json"
+    "ext": "js,json,css,html,twig",
+    "events": {
+      "start": "node-sass --output-style compressed public/scss/index.scss dist/public/css/index.css",
+      "restart": "node-sass --output-style compressed public/scss/index.scss dist/public/css/index.css"
+    }
   }
 }

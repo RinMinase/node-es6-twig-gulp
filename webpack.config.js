@@ -25,16 +25,63 @@ function configureScripts() {
  * @param {boolean} sourceMap generates a source map for the stylesheets
  */
 function configureStyles(isProduction) {
+    // return [{
+    //     test: /\.s[ac]ss$/i,
+    //     loader: [
+    //         {
+    //             loader: 'file-loader',
+    //             options: { outputPath: 'css/', name: '[name].css'}
+    //         },
+    //             // (!isProduction) ? 'style-loader' : MiniCssExtractPlugin.loader,
+    //         {
+    //         //     loader: "css-loader",
+    //         //     options: { sourceMap: !isProduction }
+    //         // }, {
+    //             loader: "sass-loader",
+    //             options: { sourceMap: !isProduction }
+    //         }
+    //         // (!isProduction) ? 'style-loader' : MiniCssExtractPlugin.loader,
+
+    //         // Creates `style` nodes from JS strings
+
+    //         // 'style-loader',
+    //         // {
+    //         //     loader: 'file-loader',
+    //         //     options: { outputPath: 'css/', name: '[name].css'}
+    //         // },
+    //         // // Translates CSS into CommonJS
+    //         // // 'css-loader',
+    //         // // Compiles Sass to CSS
+    //         // 'sass-loader',
+    //     ]
+    // }, { test: /\.css$/, loader: "style-loader!css-loader" }
+    //     // {
+    //     //     test: /\.css$/,
+    //     //     loader: [
+    //     //         'style-loader', {
+    //     //             loader: "css-loader",
+    //     //             options: { sourceMap: !isProduction }
+    //     //         },
+    //     //     ]
+    //     // }
+    // ]
+
     return {
-        test: /global\.scss$/,
-        loader: [MiniCssExtractPlugin.loader, {
-            loader: "css-loader",
-            options: { sourceMap: !isProduction }
-        }, {
-            loader: "sass-loader",
-            options: { sourceMap: !isProduction }
-        }]
-    }
+        test: /\.(scss|sass)$/,
+        use: [
+            'css-loader',
+            {
+                loader: "fast-sass-loader"
+            },
+            // {
+            //     loader: 'file-loader',
+            //     options: { outputPath: 'css/', name: '[name].css'}
+            // },
+            // {
+            //     loader: "css-loader",
+            // },
+        ]
+    };
 }
 
 /**
@@ -45,7 +92,10 @@ function configureStyles(isProduction) {
 function configureBundle(isProduction) {
     const KB = 1024;
     const bundleConfig = {
-        // resolve: { extensions: [".js"] },
+        resolve: {
+            extensions: [ ".js", ".css", ".scss" ],
+            // modules: [ "node_modules" ],
+        },
         // optimization: { splitChunks: { chunks: "all" } },
         performance: {
             hints: (isProduction) ? "warning" : false,
@@ -80,10 +130,13 @@ module.exports = (env, arg) => {
     const config = {
         target: 'node',
         externals: [ externals() ],
-        entry: './index.js',
+        entry: [
+            './index.js',
+            './public/scss/index.scss'
+        ],
         output: {
             path: path.resolve(__dirname, "dist"),
-            publicPath: '/',
+            // publicPath: '/',
             filename: '[name].js'
             // filename: 'index.js'
             // filename: "[name].bundle.[contenthash:5].js"
@@ -99,7 +152,7 @@ module.exports = (env, arg) => {
                     use: [{loader: "html-loader"}]
                 },
                 configureScripts(),
-                // configureStyles(isProduction),
+                configureStyles(isProduction),
             ]
         },
         node: {
@@ -126,7 +179,7 @@ module.exports = (env, arg) => {
             new CopyPlugin({
                 patterns: [
                     { from: "src/views", to: "views" },
-                    { from: "public", to: "public" },
+                    { from: "public/images", to: "public/images" },
                 ]
             })
         ]

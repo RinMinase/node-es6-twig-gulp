@@ -1,3 +1,6 @@
+// require('./public/stylesheets/style.scss');
+// import './public/scss/index.css';
+
 import app from './src/app'
 import debugLibrary from 'debug';
 import http from 'http';
