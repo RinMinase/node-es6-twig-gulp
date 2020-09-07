@@ -1,10 +1,8 @@
 const path = require('path');
 const externals = require('webpack-node-externals');
 const NodemonPlugin = require('nodemon-webpack-plugin');
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
-const HtmlWebPackPlugin = require("html-webpack-plugin")
 
 /**
  * Scripts configuration
@@ -17,71 +15,6 @@ function configureScripts() {
             loader: 'babel-loader',
         }
     }
-}
-
-/**
- * Stylesheept configuration
- *
- * @param {boolean} sourceMap generates a source map for the stylesheets
- */
-function configureStyles(isProduction) {
-    // return [{
-    //     test: /\.s[ac]ss$/i,
-    //     loader: [
-    //         {
-    //             loader: 'file-loader',
-    //             options: { outputPath: 'css/', name: '[name].css'}
-    //         },
-    //             // (!isProduction) ? 'style-loader' : MiniCssExtractPlugin.loader,
-    //         {
-    //         //     loader: "css-loader",
-    //         //     options: { sourceMap: !isProduction }
-    //         // }, {
-    //             loader: "sass-loader",
-    //             options: { sourceMap: !isProduction }
-    //         }
-    //         // (!isProduction) ? 'style-loader' : MiniCssExtractPlugin.loader,
-
-    //         // Creates `style` nodes from JS strings
-
-    //         // 'style-loader',
-    //         // {
-    //         //     loader: 'file-loader',
-    //         //     options: { outputPath: 'css/', name: '[name].css'}
-    //         // },
-    //         // // Translates CSS into CommonJS
-    //         // // 'css-loader',
-    //         // // Compiles Sass to CSS
-    //         // 'sass-loader',
-    //     ]
-    // }, { test: /\.css$/, loader: "style-loader!css-loader" }
-    //     // {
-    //     //     test: /\.css$/,
-    //     //     loader: [
-    //     //         'style-loader', {
-    //     //             loader: "css-loader",
-    //     //             options: { sourceMap: !isProduction }
-    //     //         },
-    //     //     ]
-    //     // }
-    // ]
-
-    return {
-        test: /\.(scss|sass)$/,
-        use: [
-            'css-loader',
-            {
-                loader: "fast-sass-loader"
-            },
-            // {
-            //     loader: 'file-loader',
-            //     options: { outputPath: 'css/', name: '[name].css'}
-            // },
-            // {
-            //     loader: "css-loader",
-            // },
-        ]
-    };
 }
 
 /**
@@ -130,16 +63,10 @@ module.exports = (env, arg) => {
     const config = {
         target: 'node',
         externals: [ externals() ],
-        entry: [
-            './index.js',
-            './public/scss/index.scss'
-        ],
+        entry: './index.js',
         output: {
             path: path.resolve(__dirname, "dist"),
-            // publicPath: '/',
             filename: '[name].js'
-            // filename: 'index.js'
-            // filename: "[name].bundle.[contenthash:5].js"
         },
         module: {
             rules: [
@@ -152,7 +79,6 @@ module.exports = (env, arg) => {
                     use: [{loader: "html-loader"}]
                 },
                 configureScripts(),
-                configureStyles(isProduction),
             ]
         },
         node: {
@@ -161,21 +87,9 @@ module.exports = (env, arg) => {
             __dirname: false,
             __filename: false,
         },
-        // devServer: {
-        //     port: 3000,
-        //     historyApiFallback: true
-        // },
         ...configureBundle(isProduction),
         plugins: [
-            // new HtmlWebPackPlugin({
-            //     template: "./src/index.html",
-            //     filename: "./src/index.html",
-            //     // excludeChunks: [ 'server' ]
-            // }),
             new CleanWebpackPlugin(),
-            // new MiniCssExtractPlugin({
-            //     filename: "[name].bundle.[contenthash:5].css"
-            // }),
             new CopyPlugin({
                 patterns: [
                     { from: "src/views", to: "views" },
