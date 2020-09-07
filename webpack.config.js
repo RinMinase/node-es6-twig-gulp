@@ -3,6 +3,7 @@ const externals = require('webpack-node-externals');
 const NodemonPlugin = require('nodemon-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
+const DotenvWebpackPlugin = require('dotenv-webpack');
 
 /**
  * Scripts configuration
@@ -89,6 +90,10 @@ module.exports = (env, arg) => {
         },
         ...configureBundle(isProduction),
         plugins: [
+            new DotenvWebpackPlugin({
+                systemvars: true,
+                safe: true,
+            }),
             new CleanWebpackPlugin(),
             new CopyPlugin({
                 patterns: [
