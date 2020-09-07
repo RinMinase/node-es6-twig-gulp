@@ -2,14 +2,7 @@
   "name": "nodejs-es6-twig-gulp",
   "description": "",
   "version": "0.1.0",
-  "license": "ISC",
   "author": "Rin Minase",
-  "main": "index.js",
-  "homepage": "https://github.com/RinMinase/nodejs-es6-twig-gulp#readme",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/RinMinase/nodejs-es6-twig-gulp.git"
-  },
   "scripts": {
     "start": "webpack --mode development --progress true --watch",
     "build": "webpack --mode production --progress true"
